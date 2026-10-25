@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - Recipe Discovery</title>
+    <meta name="description" content="Plan your meals for the day and get an automatically generated shopping list.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // PAGE PROTECTION: only logged-in users can see the Meal Planner.
+        // localStorage.getItem() reads the saved login flag; if it isn't
+        // "true", redirect back to the login page before anything renders.
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html" class="active">Meal Planner</a></li>
+                <li><a href="#" id="logout-link" class="nav-logout">Logout ⏻</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+
+        <!-- ONE-DAY MEAL PLANNER -->
+        <section class="planner-section">
+            <div class="shopping-header">
+                <h1 class="section-title" style="margin-bottom: 0;">Daily <span class="gradient-text">Meal Planner</span></h1>
+                <button id="clear-meal-plan" class="btn btn-outline btn-sm">Clear Plan</button>
+            </div>
+            <p class="section-subtitle">Pick one recipe for each meal of the day — it's saved automatically.</p>
+
+            <!-- 4 meal-slot cards (Breakfast/Lunch/Snacks/Dinner) rendered by script.js -->
+            <div id="meal-planner-grid" class="meal-planner-grid">
+                <!-- Populated by renderMealPlanner() -->
+            </div>
+        </section>
+
+        <!-- AUTOMATIC SHOPPING LIST -->
+        <section class="shopping-section">
+            <div class="shopping-header">
+                <h2 class="section-title" style="margin-bottom: 0;">Shopping <span class="gradient-text">List</span></h2>
+                <button id="clear-shopping-list" class="btn btn-outline btn-sm">Clear Shopping List</button>
+            </div>
+            <p class="section-subtitle">Automatically generated from the ingredients of your planned meals.</p>
+
+            <!-- Ingredients rendered by script.js -->
+            <div id="shopping-list-container" class="shopping-list" style="display: none;">
+                <!-- Populated by renderShoppingList() -->
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div id="shopping-empty" class="empty-state-box" style="display: none;">
+                <div class="empty-icon">🛒</div>
+                <h3 class="empty-title">No Ingredients Yet</h3>
+                <p class="empty-desc">Select recipes in the Meal Planner above to generate your shopping list.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-text">
+                <strong>Recipe Discovery Platform</strong> — Semester Project
+            </div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

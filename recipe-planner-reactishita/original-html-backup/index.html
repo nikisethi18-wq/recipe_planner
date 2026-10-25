@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Discovery - Minimalistic Food Journal</title>
+    <meta name="description" content="Discover simple, elegant recipes from around the world. Bookmark your favorites.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // PAGE PROTECTION: redirect to login.html if the user hasn't logged in.
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+                <li><a href="#" id="logout-link" class="nav-logout">Logout ⏻</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+        
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero-section">
+
+          
+
+            <div class="hero-text">
+                <span class="hero-eyebrow">🌿 Fresh &amp; Handpicked</span>
+                <h1 class="hero-title">What are you <span class="gradient-text">craving</span> today?</h1>
+                <p class="hero-description">
+                    Discover handpicked organic recipes, explore culinary delights, and save your favourite dishes in your personal recipe journal.
+                </p>
+
+                <!-- HERO SEARCH FORM -->
+                <form id="home-search-form" class="hero-search-box">
+                    <input type="text" id="home-search-input" class="search-input" placeholder="Search for recipes (e.g. Pasta, Salad)..." aria-label="Search recipes">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+
+                <div>
+                    <a href="recipes.html" class="btn btn-outline">Explore All Recipes →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED RECIPES SECTION -->
+        <section class="featured-section">
+            <h2 class="section-title">Featured Recipes</h2>
+            <p class="section-subtitle">Handpicked simple recipes for your everyday kitchen.</p>
+
+            <!-- Dynamic Grid populated by script.js -->
+            <div id="featured-recipes-grid" class="featured-grid">
+                <!-- Recipe cards injected here via JS (exactly 6 recipes) -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-text">
+                <strong>Recipe Discovery Platform</strong> — Semester Project
+            </div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

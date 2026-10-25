@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details - Recipe Discovery</title>
+    <meta name="description" content="View full recipe details, ingredients list, and step-by-step cooking instructions.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // PAGE PROTECTION: redirect to login.html if the user hasn't logged in.
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html" class="active">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+                <li><a href="#" id="logout-link" class="nav-logout">Logout ⏻</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+        
+        <!-- Dynamic content container populated by script.js -->
+        <div id="recipe-details-content">
+            <!-- Rendered by initRecipeDetailsPage() -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-text">
+                <strong>Recipe Discovery Platform</strong> — Semester Project
+            </div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
