@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favourites - Recipe Discovery</title>
+    <meta name="description" content="View your saved favourite recipes. Saved in your local storage.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // PAGE PROTECTION: redirect to login.html if the user hasn't logged in.
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html" class="active">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+                <li><a href="#" id="logout-link" class="nav-logout">Logout ⏻</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+        
+        <h1 class="section-title">Your Favourite <span class="gradient-text">Recipes</span></h1>
+        <p class="section-subtitle">Recipes you have bookmarked in your personal food journal.</p>
+
+        <!-- EMPTY STATE FALLBACK -->
+        <div id="favourites-empty" class="empty-state-box" style="display: none;">
+            <div class="empty-icon">♡</div>
+            <h3 class="empty-title">No Favourites Saved Yet</h3>
+            <p class="empty-desc">Click the heart icon on any recipe card to save it here for quick access.</p>
+            <a href="recipes.html" class="btn btn-primary">Browse Recipes</a>
+        </div>
+
+        <!-- FAVOURITES GRID -->
+        <div id="favourites-grid" class="recipe-grid">
+            <!-- Dynamically populated via script.js -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-text">
+                <strong>Recipe Discovery Platform</strong> — Semester Project
+            </div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

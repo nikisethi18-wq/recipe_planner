@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Recipes - Recipe Discovery</title>
+    <meta name="description" content="Browse our complete collection of easy and tasty recipes. Filter by cuisine or category.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // PAGE PROTECTION: redirect to login.html if the user hasn't logged in.
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                ☰
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html" class="active">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+                <li><a href="#" id="logout-link" class="nav-logout">Logout ⏻</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+        
+        <h1 class="section-title">Discover <span class="gradient-text">Recipes</span></h1>
+        <p class="section-subtitle">Search by recipe name or filter by cuisine and category.</p>
+
+        <!-- FILTERS BAR -->
+        <div class="filter-bar">
+            <div class="filter-group" style="flex: 2; min-width: 240px;">
+                <label for="recipe-search-input" class="filter-label">Search Recipe</label>
+                <input type="text" id="recipe-search-input" class="filter-input" placeholder="Type recipe name..." />
+            </div>
+
+            <div class="filter-group">
+                <label for="cuisine-filter" class="filter-label">Cuisine</label>
+                <select id="cuisine-filter" class="filter-select">
+                    <option value="all">All Cuisines</option>
+                    <option value="Italian">Italian</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Asian">Asian</option>
+                    <option value="American">American</option>
+                    <option value="French">French</option>
+                    <option value="Mediterranean">Mediterranean</option>
+                    <option value="Japanese">Japanese</option>
+                    <option value="Mexican">Mexican</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="category-filter" class="filter-label">Category</label>
+                <select id="category-filter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="Main Course">Main Course</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Starter">Starter</option>
+                    <option value="Salad">Salad</option>
+                    <option value="Dessert">Dessert</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- NO RESULTS FALLBACK -->
+        <div id="no-results-message" class="empty-state-box" style="display: none;">
+            <div class="empty-icon">🔍</div>
+            <h3 class="empty-title">No Recipes Found</h3>
+            <p class="empty-desc">Try clearing your search query or selecting a different cuisine or category filter.</p>
+        </div>
+
+        <!-- DYNAMIC RECIPES GRID -->
+        <div id="recipes-grid" class="recipe-grid">
+            <!-- Dynamically populated via script.js -->
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-text">
+                <strong>Recipe Discovery Platform</strong> — Semester Project
+            </div>
+            <ul class="footer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="favourites.html">Favourites</a></li>
+                <li><a href="meal-planner.html">Meal Planner</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Recipe Discovery</title>
+    <meta name="description" content="Login or create an account to access Recipe Discovery.">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // If the user is ALREADY logged in, skip the login page and go straight Home.
+        // (Simple client-side check using localStorage — no real server session.)
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            window.location.href = "index.html";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- NAVBAR (simplified — no links since the user isn't logged in yet) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="login.html" class="logo">
+                <span class="logo-icon">🌿</span> Recipe Discovery
+            </a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER -->
+    <main class="auth-main">
+        <div class="auth-card">
+
+            <h1 class="auth-title">Welcome <span class="gradient-text">Back</span></h1>
+            <p class="auth-subtitle">Login or create an account to plan your meals.</p>
+
+            <!-- TABS -->
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" data-tab="login">Login</button>
+                <button type="button" class="auth-tab" data-tab="register">Create Account</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="auth-form">
+                <div class="auth-field">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" class="auth-input" placeholder="Enter your username" required />
+                </div>
+                <div class="auth-field">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="auth-input" placeholder="Enter your password" required />
+                </div>
+
+                <p id="login-error" class="auth-message auth-error" style="display: none;"></p>
+
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <!-- REGISTER FORM (hidden by default) -->
+            <form id="register-form" class="auth-form" style="display: none;">
+                <div class="auth-field">
+                    <label for="register-username">Choose a Username</label>
+                    <input type="text" id="register-username" class="auth-input" placeholder="Choose a username" required />
+                </div>
+                <div class="auth-field">
+                    <label for="register-password">Choose a Password</label>
+                    <input type="password" id="register-password" class="auth-input" placeholder="Choose a password" required />
+                </div>
+
+                <p id="register-message" class="auth-message" style="display: none;"></p>
+
+                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+            </form>
+
+            <p class="auth-hint">This is a simple client-side login demo built with localStorage — no real backend is involved.</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
