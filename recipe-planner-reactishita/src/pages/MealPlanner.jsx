@@ -1,90 +1,24 @@
-// import { useEffect, useMemo, useState } from "react";
-// import { recipes } from "../recipes.js";
-
-// const slots = [
-//   { key: "breakfast", label: "Breakfast" },
-//   { key: "lunch", label: "Lunch" },
-//   { key: "snacks", label: "Snacks" },
-//   { key: "dinner", label: "Dinner" }
-// ];
-
-// function readStorage(key, fallback) {
-//   try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
-//   catch { return fallback; }
-// }
-
-// export default function MealPlanner() {
-//   const [plan, setPlan] = useState(() => readStorage("mealPlan", {}));
-//   const [checked, setChecked] = useState(() => readStorage("shoppingChecked", {}));
-//   useEffect(() => localStorage.setItem("mealPlan", JSON.stringify(plan)), [plan]);
-//   useEffect(() => localStorage.setItem("shoppingChecked", JSON.stringify(checked)), [checked]);
-//   const ingredients = useMemo(() => {
-//     const set = new Set();
-//     Object.values(plan).forEach(id => {
-//       const recipe = recipes.find(r => String(r.id) === String(id));
-//       recipe?.ingredients.forEach(item => set.add(item));
-//     });
-//     return [...set];
-//   }, [plan]);
-
-//   return (
-//     <main className="container">
-//       <section className="planner-section">
-//         <div className="shopping-header">
-//           <h1 className="section-title" style={{ marginBottom: 0 }}>Daily <span className="gradient-text">Meal Planner</span></h1>
-//           <button className="btn btn-outline btn-sm" onClick={() => setPlan({})}>Clear Plan</button>
-//         </div>
-//         <p className="section-subtitle">Pick one recipe for each meal of the day — it's saved automatically.</p>
-//         <div className="meal-planner-grid">
-//           {slots.map(slot => {
-//             const selected = recipes.find(r => String(r.id) === String(plan[slot.key]));
-//             return <div className="day-card" key={slot.key}>
-//               <h3 className="day-name">{slot.label}</h3>
-//               <select className="day-select filter-select" value={plan[slot.key] || ""} onChange={e => setPlan(old => {
-//                 const next = { ...old };
-//                 if (e.target.value) next[slot.key] = e.target.value;
-//                 else delete next[slot.key];
-//                 return next;
-//               })}>
-//                 <option value="">-- Select Recipe --</option>
-//                 {recipes.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
-//               </select>
-//               {selected && <div className="day-selected">🍽 {selected.name}</div>}
-//             </div>;
-//           })}
-//         </div>
-//       </section>
-//       <section className="shopping-section">
-//         <div className="shopping-header">
-//           <h2 className="section-title" style={{ marginBottom: 0 }}>Shopping <span className="gradient-text">List</span></h2>
-//           <button className="btn btn-outline btn-sm" onClick={() => setChecked({})}>Clear Shopping List</button>
-//         </div>
-//         <p className="section-subtitle">Automatically generated from the ingredients of your planned meals.</p>
-//         {ingredients.length ? <div className="shopping-list">{ingredients.map(item =>
-//           <label className={`shopping-item ${checked[item] ? "checked" : ""}`} key={item}>
-//             <input type="checkbox" checked={Boolean(checked[item])} onChange={e => setChecked(old => ({ ...old, [item]: e.target.checked }))} />
-//             <span>{item}</span>
-//           </label>
-//         )}</div> : <div className="empty-state-box"><div className="empty-icon">🛒</div><h3 className="empty-title">No Ingredients Yet</h3><p className="empty-desc">Select recipes in the Meal Planner above to generate your shopping list.</p></div>}
-//       </section>
-//     </main>
-//   );
-// }
-
-
-
-
 import { useEffect, useMemo, useState } from "react";
 import { recipes } from "../recipes.js";
+
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 const slots = [
   { key: "breakfast", label: "Breakfast" },
   { key: "lunch", label: "Lunch" },
   { key: "snacks", label: "Snacks" },
-  { key: "dinner", label: "Dinner" }
+  { key: "dinner", label: "Dinner" },
 ];
 
-// Estimated prices in rupees for common ingredients
+// Estimated prices in rupees for common ingredients.
 const ingredientPrices = {
   potato: 40,
   potatoes: 40,
@@ -124,35 +58,31 @@ const ingredientPrices = {
   chili: 20,
   "green chili": 20,
   cucumber: 30,
-  cucumber: 30,
   corn: 40,
   oats: 60,
   banana: 10,
   bananas: 20,
   apple: 25,
-  apples: 50
+  apples: 50,
 };
 
 function readStorage(key, fallback) {
   try {
-    return JSON.parse(
-      localStorage.getItem(key) || JSON.stringify(fallback)
-    );
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
   } catch {
     return fallback;
   }
 }
 
-// Find an estimated price for each ingredient
+// Get the estimated price of an ingredient.
 function getIngredientPrice(item) {
   const name = item.toLowerCase().trim();
 
-  // Check for an exact match first
   if (ingredientPrices[name] !== undefined) {
     return ingredientPrices[name];
   }
 
-  // Check whether the ingredient name contains a known ingredient
   const priceKeys = Object.keys(ingredientPrices);
 
   for (let i = 0; i < priceKeys.length; i++) {
@@ -161,7 +91,7 @@ function getIngredientPrice(item) {
     }
   }
 
-  // Default estimated price for an ingredient without a listed price
+  // Default estimated price.
   return 20;
 }
 
@@ -174,12 +104,12 @@ export default function MealPlanner() {
     readStorage("shoppingChecked", {})
   );
 
-  // Save the meal plan
+  // Save the weekly meal plan.
   useEffect(() => {
     localStorage.setItem("mealPlan", JSON.stringify(plan));
   }, [plan]);
 
-  // Save shopping list checkbox status
+  // Save shopping checklist status.
   useEffect(() => {
     localStorage.setItem(
       "shoppingChecked",
@@ -187,18 +117,26 @@ export default function MealPlanner() {
     );
   }, [checked]);
 
-  // Generate unique ingredients from planned recipes
+  // Collect unique ingredients from all selected meals.
   const ingredients = useMemo(() => {
     const ingredientSet = new Set();
 
-    Object.values(plan).forEach((id) => {
+    Object.values(plan).forEach((recipeId) => {
+      if (
+        recipeId === "" ||
+        recipeId === null ||
+        recipeId === undefined
+      ) {
+        return;
+      }
+
       const recipe = recipes.find(
-        (r) => String(r.id) === String(id)
+        (item) => String(item.id) === String(recipeId)
       );
 
-      if (recipe && recipe.ingredients) {
-        recipe.ingredients.forEach((item) => {
-          ingredientSet.add(item);
+      if (recipe && Array.isArray(recipe.ingredients)) {
+        recipe.ingredients.forEach((ingredient) => {
+          ingredientSet.add(ingredient);
         });
       }
     });
@@ -206,12 +144,53 @@ export default function MealPlanner() {
     return [...ingredientSet];
   }, [plan]);
 
-  // Calculate total cost of all ingredients
-  const totalCost = ingredients.reduce((total, item) => {
-    return total + getIngredientPrice(item);
-  }, 0);
+  // Update a meal for a particular day.
+  function updateMeal(day, slot, recipeId) {
+    const key = `${day}-${slot}`;
 
-  // Calculate cost of ingredients still needed
+    setPlan((oldPlan) => {
+      const nextPlan = { ...oldPlan };
+
+      if (recipeId) {
+        nextPlan[key] = recipeId;
+      } else {
+        delete nextPlan[key];
+      }
+
+      return nextPlan;
+    });
+  }
+
+  // Clear all planned meals.
+  function clearPlan() {
+    setPlan({});
+  }
+
+  // Clear all shopping checklist ticks.
+  function clearShoppingList() {
+    setChecked({});
+  }
+
+  // Update shopping checkbox status.
+  function toggleIngredient(ingredient, isChecked) {
+    setChecked((oldChecked) => ({
+      ...oldChecked,
+      [ingredient]: isChecked,
+    }));
+  }
+
+  // Count checked ingredients.
+  const checkedCount = ingredients.filter(
+    (ingredient) => Boolean(checked[ingredient])
+  ).length;
+
+  // Calculate total estimated cost.
+  const totalCost = ingredients.reduce(
+    (total, item) => total + getIngredientPrice(item),
+    0
+  );
+
+  // Calculate cost of ingredients still needed.
   const remainingCost = ingredients.reduce((total, item) => {
     if (!checked[item]) {
       return total + getIngredientPrice(item);
@@ -222,74 +201,95 @@ export default function MealPlanner() {
 
   return (
     <main className="container">
-      {/* Daily Meal Planner */}
+      {/* Weekly Meal Planner */}
       <section className="planner-section">
         <div className="shopping-header">
           <h1
             className="section-title"
             style={{ marginBottom: 0 }}
           >
-            Daily <span className="gradient-text">Meal Planner</span>
+            Weekly{" "}
+            <span className="gradient-text">Meal Planner</span>
           </h1>
 
           <button
+            type="button"
             className="btn btn-outline btn-sm"
-            onClick={() => setPlan({})}
+            onClick={clearPlan}
           >
             Clear Plan
           </button>
         </div>
 
         <p className="section-subtitle">
-          Pick one recipe for each meal of the day — it's saved
-          automatically.
+          Plan your meals from Monday to Sunday. Your selections
+          are saved automatically.
         </p>
 
-        <div className="meal-planner-grid">
-          {slots.map((slot) => {
-            const selected = recipes.find(
-              (r) => String(r.id) === String(plan[slot.key])
-            );
+        {days.map((day) => (
+          <section
+            className="day-card"
+            key={day}
+            style={{ marginBottom: "1.5rem" }}
+          >
+            <h2 className="day-name">{day}</h2>
 
-            return (
-              <div className="day-card" key={slot.key}>
-                <h3 className="day-name">{slot.label}</h3>
+            <div className="meal-planner-grid">
+              {slots.map((slot) => {
+                const key = `${day}-${slot.key}`;
+                const selectedId = plan[key] || "";
 
-                <select
-                  className="day-select filter-select"
-                  value={plan[slot.key] || ""}
-                  onChange={(e) =>
-                    setPlan((old) => {
-                      const next = { ...old };
+                const selectedRecipe = recipes.find(
+                  (recipe) =>
+                    String(recipe.id) === String(selectedId)
+                );
 
-                      if (e.target.value) {
-                        next[slot.key] = e.target.value;
-                      } else {
-                        delete next[slot.key];
+                return (
+                  <div key={key}>
+                    <label
+                      className="filter-label"
+                      htmlFor={key}
+                    >
+                      {slot.label}
+                    </label>
+
+                    <select
+                      id={key}
+                      className="day-select filter-select"
+                      value={selectedId}
+                      onChange={(event) =>
+                        updateMeal(
+                          day,
+                          slot.key,
+                          event.target.value
+                        )
                       }
+                    >
+                      <option value="">
+                        -- Select Recipe --
+                      </option>
 
-                      return next;
-                    })
-                  }
-                >
-                  <option value="">-- Select Recipe --</option>
+                      {recipes.map((recipe) => (
+                        <option
+                          key={recipe.id}
+                          value={recipe.id}
+                        >
+                          {recipe.name}
+                        </option>
+                      ))}
+                    </select>
 
-                  {recipes.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.name}
-                    </option>
-                  ))}
-                </select>
-
-                {selected && (
-                  <div className="day-selected">
-                    🍽 {selected.name}
+                    {selectedRecipe && (
+                      <p className="day-selected">
+                        🍽️ {selectedRecipe.name}
+                      </p>
+                    )}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                );
+              })}
+            </div>
+          </section>
+        ))}
       </section>
 
       {/* Shopping List with Estimated Cost */}
@@ -299,47 +299,55 @@ export default function MealPlanner() {
             className="section-title"
             style={{ marginBottom: 0 }}
           >
-            Shopping <span className="gradient-text">List</span>
+            Shopping{" "}
+            <span className="gradient-text">List</span>
           </h2>
 
           <button
+            type="button"
             className="btn btn-outline btn-sm"
-            onClick={() => setChecked({})}
+            onClick={clearShoppingList}
           >
-            Uncheck All
+            Clear Shopping List
           </button>
         </div>
 
         <p className="section-subtitle">
           Ingredients are automatically collected from your planned
-          meals. Estimated prices are shown beside each ingredient.
+          meals for the entire week. Estimated prices are shown
+          beside each ingredient.
         </p>
 
         {ingredients.length > 0 ? (
           <>
+            <p>
+              {checkedCount} of {ingredients.length} ingredients
+              checked
+            </p>
+
             <div className="shopping-list">
-              {ingredients.map((item) => (
+              {ingredients.map((ingredient) => (
                 <label
                   className={`shopping-item ${
-                    checked[item] ? "checked" : ""
+                    checked[ingredient] ? "checked" : ""
                   }`}
-                  key={item}
+                  key={ingredient}
                 >
                   <input
                     type="checkbox"
-                    checked={Boolean(checked[item])}
-                    onChange={(e) =>
-                      setChecked((old) => ({
-                        ...old,
-                        [item]: e.target.checked
-                      }))
+                    checked={Boolean(checked[ingredient])}
+                    onChange={(event) =>
+                      toggleIngredient(
+                        ingredient,
+                        event.target.checked
+                      )
                     }
                   />
 
-                  <span>{item}</span>
+                  <span>{ingredient}</span>
 
                   <span className="ingredient-price">
-                    ₹{getIngredientPrice(item)}
+                    ₹{getIngredientPrice(ingredient)}
                   </span>
                 </label>
               ))}
@@ -353,13 +361,16 @@ export default function MealPlanner() {
               </div>
 
               <div className="cost-row">
-                <span>Estimated cost of items still needed</span>
+                <span>
+                  Estimated cost of items still needed
+                </span>
                 <strong>₹{remainingCost}</strong>
               </div>
 
               <p className="cost-note">
-                Checked ingredients are treated as already available.
-                Prices are estimates and may vary by location.
+                Checked ingredients are treated as already
+                available. Prices are estimates and may vary by
+                location.
               </p>
             </div>
           </>
@@ -367,11 +378,13 @@ export default function MealPlanner() {
           <div className="empty-state-box">
             <div className="empty-icon">🛒</div>
 
-            <h3 className="empty-title">No Ingredients Yet</h3>
+            <h3 className="empty-title">
+              No Ingredients Yet
+            </h3>
 
             <p className="empty-desc">
-              Select recipes in the Meal Planner above to generate
-              your shopping list and estimated bill.
+              Select recipes for any meals during the week to
+              generate your shopping list and estimated bill.
             </p>
           </div>
         )}
@@ -379,4 +392,3 @@ export default function MealPlanner() {
     </main>
   );
 }
-

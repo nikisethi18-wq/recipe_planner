@@ -10,14 +10,13 @@ export default function Layout({ children, protectedPage = true }) {
     localStorage.removeItem("currentUser");
     navigate("/login");
   }
-
-  const links = [
-    ["/", "Home"],
-    ["/recipes", "Recipes"],
-    ["/favourites", "Favourites"],
-    ["/meal-planner", "Meal Planner"]
-  ];
-
+const links = [
+  ["/", "Home"],
+  ["/recipes", "Recipes"],
+  ["/ingredient-search", "What Can I Make?"],
+  ["/favourites", "Favourites"],
+  ["/meal-planner", "Meal Planner"]
+];
   return (
     <>
       <nav className="navbar">
