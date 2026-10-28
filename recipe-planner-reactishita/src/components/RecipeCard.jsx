@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import StarRating from "./StarRating.jsx";
 
 function getFavourites() {
   try { return JSON.parse(localStorage.getItem("favourites") || "[]"); }
@@ -30,6 +31,7 @@ export default function RecipeCard({ recipe }) {
         </div>
         <h3 className="recipe-card-title"><Link to={`/recipe/${recipe.id}`}>{recipe.name}</Link></h3>
         <p className="recipe-card-description">{recipe.time} · {recipe.difficulty}</p>
+        <StarRating recipeId={recipe.id} recipeName={recipe.name} />
         <div className="recipe-card-actions">
           <Link className="btn btn-primary btn-sm" to={`/recipe/${recipe.id}`}>View Recipe</Link>
           <button type="button" className="favourite-button" onClick={toggleFavourite} aria-label={saved ? "Remove from favourites" : "Add to favourites"}>{saved ? "♥ Saved" : "♡ Favourite"}</button>
